@@ -1,3 +1,27 @@
+"""
+This DAG fetches data from a bucket, validates it, and imports it to a PSQL database. It then calculates 
+operating periods and their metrics. 
+
+The DAG is scheduled to run daily and has the following tasks:
+
+    - fetch_and_validate_bucket: Fetches and validates the bucket data
+    - ensure_table_creation: Ensures table creation in the PSQL database
+    - fetch_and_import_to_psql: Fetches and imports the data to the PSQL database
+    - calculate_operating_periods: Calculates operating periods
+    - calculate_operating_periods_metrics: Calculates metrics for the operating periods
+    
+Task Dependencies:
+    fetch_and_validate_bucket_data >> ensure_table_creation >> fetch_and_import_to_psql 
+    >> calculate_operating_periods >> calculate_operating_periods_metrics
+    
+DAG Parameters:
+    default_args: A dictionary containing default arguments for the DAG.
+    dag_id: The ID of the DAG.
+    start_date: The start date of the DAG.
+    schedule_interval: The interval at which the DAG is scheduled to run.
+"""
+
+
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
