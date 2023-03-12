@@ -1,0 +1,56 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "event": {
+            "type": "string"
+        },
+        "on": {
+            "type": "string"
+        },
+        "at": {
+            "type": "string"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "object",
+                    "properties": {
+                        "lat": {
+                            "type": "number"
+                        },
+                        "lng": {
+                            "type": "number"
+                        },
+                        "at": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "lat",
+                        "lng",
+                        "at"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "location"
+            ]
+        },
+        "organization_id": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "event",
+        "on",
+        "at",
+        "data",
+        "organization_id"
+    ]
+}
