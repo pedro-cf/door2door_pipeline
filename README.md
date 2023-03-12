@@ -50,12 +50,12 @@ cd door2door_pipeline
 
 To deploy this solution with separate entities for MinIO, Apache Airflow, and PSQL Database on AWS cloud, you can follow these steps:
 
-# Launch MinIO on a separate Amazon EC2 instance
+##### Launch MinIO on a separate Amazon EC2 instance
 1. Launch a EC2 instance for MinIO
 2. Install and configure MinIO according to the official documentation
 3. Configure the security group to allow incoming traffic from the Airflow instance
 
-# Launch PostgreSQL on a separate Amazon RDS instance
+##### Launch PostgreSQL on a separate Amazon RDS instance
 1. Go to the Amazon RDS console and click "Create database"
 2. Select "PostgreSQL" (or "PostGIS" preferebly) as the database engine and choose the version you want to use
 3. Choose the instance class and the amount of storage you need
@@ -64,7 +64,7 @@ To deploy this solution with separate entities for MinIO, Apache Airflow, and PS
 6. Configure the security group to allow incoming traffic from the Airflow instance
 7. Launch the RDS instance
 
-# Launch Apache Airflow on an Amazon EC2 instance
+##### Launch Apache Airflow on an Amazon EC2 instance
 1. Go to the AWS Management Console and navigate to the EC2 service
 2. Click "Launch Instance" to create a new EC2 instance
 3. Select an Amazon Machine Image (AMI) that supports Apache Airflow, such as the official Airflow AMI from the AWS Marketplace
