@@ -12,6 +12,18 @@ from utils.psql_utils import PSQL_connect
 from utils.utils import generate_correlation_id
 
 def import_json_to_psql(file_path, correlation_id, connection, cursor):
+    """
+    Import JSON data to PostgreSQL database based on specified criteria.
+
+    Args:
+        file_path (str): Path to the JSON file to import.
+        correlation_id (str): Unique ID to correlate this process with others.
+        connection (psycopg2.extensions.connection): Connection to the PostgreSQL database.
+        cursor (psycopg2.extensions.cursor): Cursor to the PostgreSQL database.
+
+    Returns:
+        None
+    """
     data = read_json_file(file_path)
     
     for obj in data:
@@ -53,6 +65,15 @@ def import_json_to_psql(file_path, correlation_id, connection, cursor):
             """)
 
 def fetch_and_import_to_psql(**context):
+    """
+    Fetches data files from a MinIO bucket and imports the contents into PostgreSQL.
+
+    Args:
+        **context: Context dictionary passed by Airflow.
+
+    Returns:
+        None.
+    """
     correlation_id = generate_correlation_id(context['dag_run'].run_id)
     logging.info(f"Running fetch_and_import_to_psql for {correlation_id=}")
 

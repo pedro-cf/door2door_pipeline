@@ -15,6 +15,15 @@ VEHICLE_REGISTRATION_VALIDATOR = jsonschema.Draft7Validator(json.load(open("/opt
 OPERATING_PERIOD_VALIDATOR = jsonschema.Draft7Validator(json.load(open("/opt/airflow/resources/jsonschemas/operating_period.json")))
 
 def valid_file(file_path):
+    """
+    Validate the JSON schema of the given file against the appropriate schema based on the `on` and `event` fields.
+    
+    Args:
+    - file_path (str): Path to the JSON file to validate.
+    
+    Returns:
+    - bool: True if the schema is valid, False otherwise.
+    """
     data = read_json_file(file_path)
     res = True
     for obj in data:
@@ -34,8 +43,23 @@ def valid_file(file_path):
                 res = False
     return res
 
-
 def send_file_to_minio(file_path, endpoint, user, password, bucket, prefix, object_name=None):
+    """
+    Upload the given file to MinIO at the specified bucket and prefix with the given object name.
+    
+    Args:
+    - file_path (str): Path to the file to upload.
+    - endpoint (str): The endpoint URL of the MinIO server.
+    - user (str): The access key for the MinIO server.
+    - password (str): The secret key for the MinIO server.
+    - bucket (str): The name of the bucket to upload the file to.
+    - prefix (str): The prefix of the object key to use.
+    - object_name (str): Optional. The name of the object to use for the uploaded file. Defaults to the base name of the file at `file_path`.
+    
+    Returns:
+    - None
+    """
+    
     # Set up MinIO client
     minio_client = Minio(
         endpoint, access_key=user, secret_key=password, secure=False  # Disable SSL/TLS
@@ -57,6 +81,18 @@ def send_file_to_minio(file_path, endpoint, user, password, bucket, prefix, obje
         print(f"Error uploading file {file_path} to MinIO: {e}")
 
 def fetch_and_validate_bucket(target_date, **context):
+    """
+    Fetches all files from the "de-tech-assessment-2022" bucket that match the given `target_date` and validates their schemas. 
+    If a schema is valid, the corresponding file is uploaded to the "datalake" bucket on MinIO.
+    
+    Args:
+    - target_date (str or datetime.datetime): The target date to match files against. If a string, it must be in the format "%Y-%m-%d".
+    - **context: Additional context that can be passed to the function.
+    
+    Returns:
+    - str: The target date in the format "%Y-%m-%d".
+    """
+    
     correlation_id = generate_correlation_id(context['dag_run'].run_id)
     logging.info(f"Running fetch_and_validate_bucket_data for {target_date=} and {correlation_id=}")
     if type(target_date) is str:

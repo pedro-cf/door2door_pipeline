@@ -3,11 +3,22 @@ from typing import List
 import logging
 import jsonschema
 
-def banana(instance, schema=None, validator=None):
-    print(111111)
-
 
 def read_json_file(file_path: str) -> List[dict]:
+    """
+    Reads a JSON file and returns a list of JSON objects.
+
+    Args:
+        file_path (str): Path to the JSON file to read.
+
+    Returns:
+        List[dict]: A list of JSON objects from the file.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        json.JSONDecodeError: If the file is not valid JSON.
+    """
+    
     with open(file_path, "r") as f:
         file_contents = f.read()
 
@@ -31,6 +42,26 @@ def read_json_file(file_path: str) -> List[dict]:
 
 
 def validate_jsonschema(instance, schema=None, validator=None):
+    """
+    Validates a JSON object against a JSON schema.
+
+    Args:
+        instance: The JSON object to validate.
+        schema (Union[str, dict], optional): The JSON schema to validate against.
+            Can be either a string or a dictionary representing the schema.
+            If a string is passed, it will be parsed as JSON.
+        validator (jsonschema.validators.validator.ValidatingDraft7Validator,
+            optional): The validator to use for validation. If a validator is passed,
+            it will take precedence over the schema argument.
+
+    Returns:
+        bool: True if the JSON object is valid according to the schema or validator,
+            False otherwise.
+
+    Raises:
+        Exception: If neither schema nor validator is passed to the function.
+    """
+    
     try:
         if validator:
             validator.validate(instance)

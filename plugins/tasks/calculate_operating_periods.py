@@ -5,6 +5,16 @@ from utils.psql_utils import PSQL_connect
 from utils.utils import generate_correlation_id
 
 def calculate_operating_periods(**context):
+    """
+    Creates operating periods for registered vehicles based on registration and deregistration events in the database.
+
+    Args:
+        context (dict): The context dictionary provided by Airflow.
+
+    Returns:
+        None
+
+    """
     correlation_id = generate_correlation_id(context['dag_run'].run_id)
     logging.info(f"Running calculate_operating_periods for {correlation_id=}")
     

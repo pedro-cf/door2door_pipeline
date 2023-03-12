@@ -1,5 +1,5 @@
 #!/bin/bash
-docker-compose down -v || true ;
+docker-compose down -t 0 -v || true ;
 mkdir -p ./dags ./logs ./plugins ./resources
 AIRFLOW_UID=$(id -u)
 if ! grep -qxF "AIRFLOW_UID=$AIRFLOW_UID" .env ; then

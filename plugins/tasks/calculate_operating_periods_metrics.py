@@ -5,6 +5,24 @@ from utils.psql_utils import PSQL_connect
 from utils.utils import generate_correlation_id
 
 def calculate_operating_periods_metrics(**context):
+    """
+    Calculate metrics for operating periods.
+
+    This function inserts data into the `operating_period_metrics` table in the
+    database. The table contains the time elapsed and distance travelled for each
+    operating period, as well as a correlation ID to link the data to the original
+    run of the DAG.
+
+    Parameters
+    ----------
+    context : dict
+        The context dictionary, which is provided by Airflow and contains information
+        about the current DAG run.
+
+    Returns
+    -------
+    None
+    """
     correlation_id = generate_correlation_id(context['dag_run'].run_id)
     logging.info(f"Running calculate_operating_periods_metrics for {correlation_id=}")
     

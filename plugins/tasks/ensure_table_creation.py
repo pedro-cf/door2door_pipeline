@@ -5,7 +5,15 @@ from utils.psql_utils import PSQL_connect
 from utils.utils import generate_correlation_id
 
 def ensure_table_creation(**context):
-    """Create necessary tables in PostgresSQL"""
+    """
+    Create necessary tables in PostgresSQL
+    
+    Args:
+        context (dict): The context dictionary provided by Airflow.
+
+    Returns:
+        None
+    """
     correlation_id = generate_correlation_id(context['dag_run'].run_id)
     logging.info(f"Running ensure_table_creation for {correlation_id=}")
     
