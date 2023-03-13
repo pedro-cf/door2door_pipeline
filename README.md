@@ -14,9 +14,24 @@ The data pipeline is built using the following technologies:
 - MinIO Buckets: an object storage server that implements Amazon S3 APIs, which serves as a replacement for S3 buckets.
 - PSQL: a powerful, open-source SQL database system.
 
-The architecture of the pipeline is shown below:
+The DAG or a Directed Acyclic Graph is a collection of all the tasks you want to run, organized in a way that reflects their relationships and dependencies.
+This DAG can be triggered by schedule (Daily), manually and manually with a config (example: {"target_date":"2019-06-01"}).
+
+The architecture of the pipeline or DAG is shown below:
 
 ![Door2Door Data Pipeline Architecture](https://i.imgur.com/lNibu5o.png)
+
+1. **fetch_and_validate_bucket**: Fetches all files from the "de-tech-assessment-2022" bucket that match the given `target_date` and validates their schemas. 
+    If a schema is valid, the corresponding file is uploaded to the "datalake" bucket on MinIO.
+
+2. **ensure_table_creation**: Create necessary tables in PostgresSQL
+
+3. **fetch_and_import_to_psql**: Fetches data files from the MinIO bucket datalake and imports the contents into PostgreSQL.
+
+4. **calculate_operating_periods**: Creates operating periods for registered vehicles based on registration and deregistration events in the database.
+
+5. **calculate_operating_periods_metrics**: Calculate metrics for operating periods like time elapsed and distance travelled.
+
 
 ## Installation & Usage
 
@@ -44,7 +59,9 @@ cd door2door_pipeline
 
 4. Access the Airflow web UI by visiting `http://localhost:8080` in your web browser.
 
-5. Access the PSQL database with pgAdmin, f.e.
+5. Activate the DAG
+
+6. (optional) Trigger the dag manually with config: ``{"target_date":"2019-06-01"}``
 
 ## Deployment
 
